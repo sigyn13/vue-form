@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1>Форма подачи заявки в отдел сервиса и качества</h1>
+    <v-form />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import VForm from "./components/vForm.vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
-  components: {
-    HelloWorld
+  components: { VForm },
+  computed: {
+    ...mapGetters(["CITY"])
+  },
+  methods: {
+    ...mapActions(["GET_CITY_FROM_API"])
+  },
+  mounted() {
+    this.GET_CITY_FROM_API();
   }
 };
 </script>
