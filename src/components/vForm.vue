@@ -22,6 +22,7 @@
         :key="label.id"
         :label="label.title"
         @clearInputValue="clearInputValue()"
+        :checkedTheme="checkedTheme"
       />
       <input
         class="form__input"
@@ -29,6 +30,7 @@
         type="text"
         placeholder="Другое"
         v-on:keyup="setThemeCheck('theme')"
+        :required="!checkedTheme"
       />
     </div>
     <div class="form__textarea-wrap">
@@ -60,6 +62,7 @@ export default {
   data() {
     return {
       checkedCity: false,
+      checkedTheme: false,
       radioLabelData: [
         { title: "Недоволен качеством услуг", id: 1 },
         { title: "Расторжение договора", id: 2 },
@@ -83,17 +86,26 @@ export default {
     setCityCheck() {
       this.checkedCity = !this.checkedCity;
     },
+    setThemeCheckValue() {
+      let radioBtnCollection = document.getElementsByName("theme");
+      if (radioBtnCollection.forEach(i => i.checked === true)) {
+        this.checkedTheme = !this.checkedTheme;
+      }
+    },
     setThemeCheck(radioName) {
-      let inputHandTheme = document.getElementById("hand-theme");
-      if (inputHandTheme.value !== "") {
-        let radioBtnCollection = document.getElementsByName(radioName);
+      let inputHandTheme = document.getElementById("hand-theme").value;
+      let radioBtnCollection = document.getElementsByName(radioName);
+
+      if (inputHandTheme !== "") {
         radioBtnCollection.forEach(i => (i.checked = false));
       }
     },
     clearInputValue() {
-      let inputHandTheme = document.getElementById("hand-theme");
-      inputHandTheme.value = "";
+      document.getElementById("hand-theme").value = "";
     }
+  },
+  mounted() {
+    this.setThemeCheckValue();
   }
 };
 </script>

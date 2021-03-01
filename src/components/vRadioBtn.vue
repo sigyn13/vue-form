@@ -8,6 +8,7 @@
       v-model="checked"
       @click="click(label)"
       :checked="!checked"
+      :required="!checkedTheme"
     />
     <span class="radio-mark"></span>
   </label>
@@ -26,6 +27,12 @@ export default {
       type: String,
       default() {
         return "";
+      }
+    },
+    checkedTheme: {
+      type: Boolean,
+      default() {
+        return false;
       }
     }
   },
