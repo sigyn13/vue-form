@@ -2,8 +2,13 @@
   <form class="form">
     <div class="form__select-wrap">
       <p class="form__subtitle">Ваш филиал <span>*</span></p>
-      <select class="form__select" name="city" :disabled="checkedCity">
-        <option value=" " :selected="checkedCity">Выберите город</option>
+      <select
+        class="form__select"
+        name="city"
+        :disabled="checkedCity"
+        :required="!checkedCity"
+      >
+        <option value="" :selected="checkedCity">Выберите город</option>
         <option v-for="city in cityList" :key="city.id" :value="city.title">
           {{ city.title }}
         </option>
@@ -16,9 +21,15 @@
         v-for="label in radioLabelData"
         :key="label.id"
         :label="label.title"
-        @setThemeCheck="setThemeCheck"
+        @clearInputValue="clearInputValue()"
       />
-      <input class="form__input" type="text" placeholder="Другое" />
+      <input
+        class="form__input"
+        id="hand-theme"
+        type="text"
+        placeholder="Другое"
+        v-on:keyup="setThemeCheck('theme')"
+      />
     </div>
     <div class="form__textarea-wrap">
       <p class="form__subtitle">Описание проблемы <span>*</span></p>
@@ -38,7 +49,7 @@
       </p>
       <input type="file" />
     </div>
-    <button class="form__btn">Отправить</button>
+    <button class="form__btn" type="submit">Отправить</button>
   </form>
 </template>
 
@@ -72,7 +83,17 @@ export default {
     setCityCheck() {
       this.checkedCity = !this.checkedCity;
     },
-    setThemeCheck() {}
+    setThemeCheck(radioName) {
+      let inputHandTheme = document.getElementById("hand-theme");
+      if (inputHandTheme.value !== "") {
+        let radioBtnCollection = document.getElementsByName(radioName);
+        radioBtnCollection.forEach(i => (i.checked = false));
+      }
+    },
+    clearInputValue() {
+      let inputHandTheme = document.getElementById("hand-theme");
+      inputHandTheme.value = "";
+    }
   }
 };
 </script>

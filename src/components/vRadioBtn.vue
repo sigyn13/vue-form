@@ -33,7 +33,7 @@ export default {
   computed: {},
   methods: {
     click(label) {
-      this.$emit("setThemeCheck", label);
+      this.$emit("clearInputValue", label);
     }
   }
 };
