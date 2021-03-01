@@ -22,7 +22,13 @@
     </div>
     <div class="form__textarea-wrap">
       <p class="form__subtitle">Описание проблемы <span>*</span></p>
-      <textarea name="description" id="" cols="40" rows="8"></textarea>
+      <textarea
+        name="description"
+        cols="40"
+        rows="5"
+        required
+        placeholder="Введите текст"
+      ></textarea>
     </div>
     <div class="form__download-wrap">
       <p class="form__subtitle">Загрузка документов</p>
@@ -32,6 +38,7 @@
       </p>
       <input type="file" />
     </div>
+    <button class="form__btn">Отправить</button>
   </form>
 </template>
 
@@ -77,6 +84,7 @@ export default {
   padding: 30px;
   display: flex;
   flex-direction: column;
+  margin: 0 0 30px;
   p {
     margin: 0 0 10px;
 
@@ -103,14 +111,37 @@ export default {
 
   &__textarea-wrap {
     margin-top: 30px;
+
+    textarea {
+      padding: 5px 10px;
+    }
+
+    input {
+      font-size: 14px;
+    }
   }
 
   &__download-wrap {
     margin-top: 30px;
+    input {
+      font-size: 12px;
+    }
   }
 
   &__desc {
     font-size: 12px;
+    opacity: 0.8;
+  }
+
+  &__btn {
+    margin: 35px 0 0;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(255, 164, 79);
+    width: 150px;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    color: white;
   }
 }
 </style>
