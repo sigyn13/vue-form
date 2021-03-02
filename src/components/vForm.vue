@@ -57,7 +57,6 @@
     <button class="form__btn" type="submit" :disabled="isDisabled">
       Отправить
     </button>
-    <div @click="removeDisabledProp()">click</div>
   </form>
 </template>
 
@@ -69,7 +68,6 @@ export default {
     return {
       checkedCity: false,
       checkedTheme: false,
-      isDisabled: true,
       radioLabelData: [
         { title: "Недоволен качеством услуг", id: 1 },
         { title: "Расторжение договора", id: 2 },
@@ -93,7 +91,12 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    isDisabled() {
+      let fieldsForm = Object.values(this.form);
+      return !fieldsForm.every(i => i.length > 0);
+    }
+  },
   methods: {
     setCityValue() {
       this.checkedCity = !this.checkedCity;
@@ -115,18 +118,7 @@ export default {
       document.getElementById("hand-theme").value = "";
       this.form.theme = label;
       this.checkedTheme = true;
-    },
-    // FIX ME
-    removeDisabledProp() {
-      let fieldsForm = Object.values(this.form);
-      console.log(fieldsForm);
-      if (fieldsForm.forEach(i => i.value !== "")) {
-        this.isDisabled = false;
-      }
     }
-  },
-  mounted() {
-    this.removeDisabledProp();
   }
 };
 </script>
