@@ -18,7 +18,7 @@ export default {
   computed: {},
   methods: {
     click() {
-      this.$emit("setCityCheck");
+      this.$emit("setCityValue");
     }
   }
 };

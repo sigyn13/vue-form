@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form class="form" action="post">
     <div class="form__select-wrap">
       <p class="form__subtitle">Ваш филиал <span>*</span></p>
       <select
@@ -7,13 +7,14 @@
         name="city"
         :disabled="checkedCity"
         :required="!checkedCity"
+        v-model="form.location"
       >
         <option value="" :selected="checkedCity">Выберите город</option>
         <option v-for="city in cityList" :key="city.id" :value="city.title">
           {{ city.title }}
         </option>
       </select>
-      <v-checkbox @setCityCheck="setCityCheck()" />
+      <v-checkbox @setCityValue="setCityValue()" />
     </div>
     <div class="form__checkbox-wrap">
       <p class="form__subtitle">Тема обращения <span>*</span></p>
@@ -21,15 +22,16 @@
         v-for="label in radioLabelData"
         :key="label.id"
         :label="label.title"
-        @clearInputValue="clearInputValue()"
+        @clearInputValue="clearInputValue(label.title)"
         :checkedTheme="checkedTheme"
+        :form="form"
       />
       <input
         class="form__input"
         id="hand-theme"
         type="text"
         placeholder="Другое"
-        v-on:keyup="setThemeCheck('theme')"
+        v-on:keyup="setThemeValue('theme')"
         :required="!checkedTheme"
       />
     </div>
@@ -41,6 +43,7 @@
         rows="5"
         required
         placeholder="Введите текст"
+        v-model="form.description"
       ></textarea>
     </div>
     <div class="form__download-wrap">
@@ -51,7 +54,10 @@
       </p>
       <input type="file" />
     </div>
-    <button class="form__btn" type="submit">Отправить</button>
+    <button class="form__btn" type="submit" :disabled="isDisabled">
+      Отправить
+    </button>
+    <div @click="removeDisabledProp()">click</div>
   </form>
 </template>
 
@@ -63,12 +69,18 @@ export default {
     return {
       checkedCity: false,
       checkedTheme: false,
+      isDisabled: true,
       radioLabelData: [
         { title: "Недоволен качеством услуг", id: 1 },
         { title: "Расторжение договора", id: 2 },
         { title: "Не приходит письмо активации на почту", id: 3 },
         { title: "Не работает личный кабинет", id: 4 }
-      ]
+      ],
+      form: {
+        location: "",
+        theme: "",
+        description: ""
+      }
     };
   },
   name: "vForm",
@@ -83,29 +95,38 @@ export default {
   },
   computed: {},
   methods: {
-    setCityCheck() {
+    setCityValue() {
       this.checkedCity = !this.checkedCity;
-    },
-    setThemeCheckValue() {
-      let radioBtnCollection = document.getElementsByName("theme");
-      if (radioBtnCollection.forEach(i => i.checked === true)) {
-        this.checkedTheme = !this.checkedTheme;
+      if (this.checkedCity === true) {
+        this.form.location = "Онлайн";
       }
     },
-    setThemeCheck(radioName) {
+    setThemeValue(radioName) {
       let inputHandTheme = document.getElementById("hand-theme").value;
       let radioBtnCollection = document.getElementsByName(radioName);
 
       if (inputHandTheme !== "") {
         radioBtnCollection.forEach(i => (i.checked = false));
+        this.checkedTheme = true;
+        this.form.theme = inputHandTheme;
       }
     },
-    clearInputValue() {
+    clearInputValue(label) {
       document.getElementById("hand-theme").value = "";
+      this.form.theme = label;
+      this.checkedTheme = true;
+    },
+    // FIX ME
+    removeDisabledProp() {
+      let fieldsForm = Object.values(this.form);
+      console.log(fieldsForm);
+      if (fieldsForm.forEach(i => i.value !== "")) {
+        this.isDisabled = false;
+      }
     }
   },
   mounted() {
-    this.setThemeCheckValue();
+    this.removeDisabledProp();
   }
 };
 </script>
@@ -175,6 +196,10 @@ export default {
     text-transform: uppercase;
     padding: 10px 15px;
     color: white;
+
+    &:disabled {
+      background-color: rgb(167, 167, 167);
+    }
   }
 }
 </style>

@@ -34,6 +34,12 @@ export default {
       default() {
         return false;
       }
+    },
+    form: {
+      type: Object,
+      default() {
+        return {};
+      }
     }
   },
   components: {},
