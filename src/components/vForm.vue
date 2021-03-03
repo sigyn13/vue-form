@@ -58,7 +58,7 @@
       class="form__btn"
       type="submit"
       :disabled="isDisabled"
-      @click.prevent="postMethodAction(form)"
+      @click.prevent="postAction(form)"
     >
       Отправить
     </button>
@@ -133,7 +133,7 @@ export default {
     },
     ...mapGetters(["SUCCESS"]),
     ...mapActions(["POST_DATA_FROM_FORM"]),
-    postMethodAction(form) {
+    postAction(form) {
       this.POST_DATA_FROM_FORM(form);
       if (this.postSuccess === false) {
         alert("Ошибка отправки заявки");
@@ -146,6 +146,9 @@ export default {
           .querySelectorAll("input[type=radio], input[type=checkbox]")
           .forEach(i => (i.checked = false));
         document.querySelector(".form__select").selectedIndex = "0";
+        for (let prop in this.form) {
+          this.form[prop] = "";
+        }
       }
     }
   }
