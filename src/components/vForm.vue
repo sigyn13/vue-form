@@ -58,7 +58,7 @@
       class="form__btn"
       type="submit"
       :disabled="isDisabled"
-      @click.prevent="postAction(form)"
+      @click.prevent="postMethodAction(form)"
     >
       Отправить
     </button>
@@ -133,12 +133,15 @@ export default {
     },
     ...mapGetters(["SUCCESS"]),
     ...mapActions(["POST_DATA_FROM_FORM"]),
-    postAction(form) {
+    postMethodAction(form) {
       this.POST_DATA_FROM_FORM(form);
       if (this.postSuccess === false) {
         alert("Ошибка отправки заявки");
       }
       if (this.postSuccess === true) {
+        if (this.checkedCity === true) {
+          this.checkedCity = false;
+        }
         document
           .querySelectorAll("input[type=text], textarea")
           .forEach(i => (i.value = ""));
@@ -146,9 +149,6 @@ export default {
           .querySelectorAll("input[type=radio], input[type=checkbox]")
           .forEach(i => (i.checked = false));
         document.querySelector(".form__select").selectedIndex = "0";
-        for (let prop in this.form) {
-          this.form[prop] = "";
-        }
       }
     }
   }
