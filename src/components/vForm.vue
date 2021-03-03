@@ -54,7 +54,12 @@
       </p>
       <input type="file" />
     </div>
-    <button class="form__btn" type="submit" :disabled="isDisabled">
+    <button
+      class="form__btn"
+      type="submit"
+      :disabled="isDisabled"
+      @click.prevent="postMethodAction(form)"
+    >
       Отправить
     </button>
   </form>
@@ -63,6 +68,8 @@
 <script>
 import VCheckbox from "./vCheckbox.vue";
 import VRadioBtn from "./vRadioBtn.vue";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -92,9 +99,14 @@ export default {
     }
   },
   computed: {
+    fieldsForm() {
+      return Object.values(this.form);
+    },
     isDisabled() {
-      let fieldsForm = Object.values(this.form);
-      return !fieldsForm.every(i => i.length > 0);
+      return !this.fieldsForm.every(i => i.length > 0);
+    },
+    postSuccess() {
+      return this.$store.getters.SUCCESS;
     }
   },
   methods: {
@@ -118,6 +130,14 @@ export default {
       document.getElementById("hand-theme").value = "";
       this.form.theme = label;
       this.checkedTheme = true;
+    },
+    ...mapGetters(["SUCCESS"]),
+    ...mapActions(["POST_DATA_FROM_FORM"]),
+    postMethodAction(form) {
+      this.POST_DATA_FROM_FORM(form);
+      if (this.postSuccess === false) {
+        alert("Ошибка отправки заявки");
+      }
     }
   }
 };

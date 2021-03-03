@@ -2,20 +2,25 @@
   <div id="app">
     <h1>Форма подачи заявки в отдел сервиса и качества</h1>
     <v-form :cityList="cityList" />
+    <v-modal-window v-if="postSuccess === true" />
   </div>
 </template>
 
 <script>
 import VForm from "./components/vForm.vue";
 import { mapActions, mapGetters } from "vuex";
+import VModalWindow from "./components/vModalWindow.vue";
 
 export default {
   name: "App",
-  components: { VForm },
+  components: { VForm, VModalWindow },
   computed: {
-    ...mapGetters(["CITY"]),
+    ...mapGetters(["CITY", "SUCCESS"]),
     cityList() {
       return this.$store.getters.CITY;
+    },
+    postSuccess() {
+      return this.$store.getters.SUCCESS;
     }
   },
   methods: {
