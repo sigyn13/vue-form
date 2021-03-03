@@ -138,6 +138,15 @@ export default {
       if (this.postSuccess === false) {
         alert("Ошибка отправки заявки");
       }
+      if (this.postSuccess === true) {
+        document
+          .querySelectorAll("input[type=text], textarea")
+          .forEach(i => (i.value = ""));
+        document
+          .querySelectorAll("input[type=radio], input[type=checkbox]")
+          .forEach(i => (i.checked = false));
+        document.querySelector(".form__select").selectedIndex = "0";
+      }
     }
   }
 };
@@ -208,6 +217,7 @@ export default {
     text-transform: uppercase;
     padding: 10px 15px;
     color: white;
+    outline: none;
 
     &:disabled {
       background-color: rgb(167, 167, 167);
